@@ -1,3 +1,4 @@
+-- Copyright 2014 Karim Sumun
 -- This file is part of Karim's Haskell Learning Project.
 
 -- Karim's Haskell Learning Project is free software: you can
