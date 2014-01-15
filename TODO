@@ -1,0 +1,3 @@
+Wed Jan 15 15:08:33 EST 2014
+The application needs to know how to get the request. This should be factored
+out and passed in as a context.
