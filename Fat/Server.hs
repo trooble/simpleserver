@@ -37,20 +37,6 @@ serviceRequest sock app =
      hClose handle
      serviceRequest sock app
 
--- TODO: rfc2616 says, in effect, that a request is one line, so all this
--- is unnecessary.
-getLines :: Handle -> IO [String]
-getLines hdl =
-  do hSetBuffering hdl LineBuffering
-     getLines' []
-  where getLines' iostrings =
-          do line <- tryIOError (hGetLine hdl)
-             case line of
-               Left e -> if isEOFError e
-                            then return (reverse iostrings)
-                            else ioError e
-               Right inp -> do getLines' (inp:iostrings)
-
 getRequest :: Handle -> IO String
 getRequest h =
   do oldBuffering <- hGetBuffering h
