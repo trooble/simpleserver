@@ -23,6 +23,7 @@ import qualified Network.Socket as S
 import System.IO -- (Handle, hClose, hFlush, hSetBuffering, BufferMode(..))
 import System.IO.Error (isEOFError, tryIOError, ioError)
 import qualified Data.ByteString.Char8 as C
+import Control.Concurrent
 
 run :: Integer -> (Handle -> IO ()) -> IO ()
 run port app =
@@ -33,8 +34,7 @@ run port app =
 serviceRequest :: S.Socket -> (Handle -> IO ()) -> IO ()
 serviceRequest sock app =
   do (handle, peerhost, peerport) <- accept sock
-     withSocketsDo $ do app handle
-     hClose handle
+     forkFinally (withSocketsDo $ do app handle) (\_ -> hClose handle)
      serviceRequest sock app
 
 getRequest :: Handle -> IO String
